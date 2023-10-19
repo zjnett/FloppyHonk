@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://kew4qceobcpn"]
+
+[ext_resource type="Script" path="res://scenes/PipePair.cs" id="1_000je"]
+[ext_resource type="Texture2D" uid="uid://cgayf1j7hve67" path="res://assets/Pipe.png" id="2_ogoab"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jloao"]
+size = Vector2(20, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b8txc"]
+size = Vector2(20, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o7n7o"]
+size = Vector2(26.9333, 39.8)
+
+[node name="PipePair" type="CharacterBody2D"]
+scale = Vector2(10, 10)
+collision_mask = 0
+script = ExtResource("1_000je")
+metadata/_edit_group_ = true
+
+[node name="Top Pipe" type="Area2D" parent="."]
+position = Vector2(0, -25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top Pipe"]
+position = Vector2(0, -55)
+shape = SubResource("RectangleShape2D_jloao")
+
+[node name="Sprite2D" type="Sprite2D" parent="Top Pipe"]
+texture_filter = 1
+position = Vector2(0, -55)
+rotation = 3.14159
+texture = ExtResource("2_ogoab")
+
+[node name="Bottom Pipe" type="Area2D" parent="."]
+position = Vector2(0, 25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom Pipe"]
+position = Vector2(0, 55)
+shape = SubResource("RectangleShape2D_b8txc")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Bottom Pipe"]
+texture_filter = 1
+position = Vector2(0, 55)
+texture = ExtResource("2_ogoab")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(1, 15)
+
+[node name="Middle" type="Area2D" parent="."]
+
+[node name="MiddleOfPipes" type="CollisionShape2D" parent="Middle"]
+scale = Vector2(0.75, 0.75)
+shape = SubResource("RectangleShape2D_o7n7o")
+
+[connection signal="body_entered" from="Top Pipe" to="." method="OnTopPipeBodyEntered"]
+[connection signal="body_entered" from="Bottom Pipe" to="." method="OnBottomPipeBodyEntered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnVisibleOnScreenNotifier2DScreenExited"]
+[connection signal="body_entered" from="Middle" to="." method="OnMiddlePipeBodyEntered"]

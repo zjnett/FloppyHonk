@@ -1,0 +1,53 @@
+[gd_scene load_steps=8 format=3 uid="uid://siqaxhty0ieo"]
+
+[ext_resource type="Script" path="res://scenes/Bird.cs" id="1_b8eg4"]
+[ext_resource type="Texture2D" uid="uid://nljemiaqskfy" path="res://assets/Goose/Goose000.png" id="2_sbihd"]
+[ext_resource type="Texture2D" uid="uid://dpvmln784h5gu" path="res://assets/Goose/Goose001.png" id="3_k10nm"]
+[ext_resource type="Texture2D" uid="uid://dr0tyc36vbkjo" path="res://assets/Goose/Goose002.png" id="4_xvfsg"]
+[ext_resource type="AudioStream" uid="uid://b6fa07xvgot1j" path="res://assets/bounce_quieter.wav" id="5_0cen1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dofur"]
+size = Vector2(32, 26)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kpg7c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_sbihd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_k10nm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_xvfsg")
+}],
+"loop": true,
+"name": &"fly",
+"speed": 10.0
+}]
+
+[node name="Bird" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+script = ExtResource("1_b8eg4")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_dofur")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(1.5, 1.5)
+sprite_frames = SubResource("SpriteFrames_kpg7c")
+animation = &"fly"
+frame_progress = 0.172055
+
+[node name="FlapSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_0cen1")
+volume_db = -0.125
+pitch_scale = 3.0
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_OnVisibilityNotifier2DScreenEntered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_OnVisibilityNotifier2DScreenExited"]

@@ -1,0 +1,98 @@
+[gd_scene load_steps=13 format=3 uid="uid://dk8bgrprerqlc"]
+
+[ext_resource type="PackedScene" uid="uid://siqaxhty0ieo" path="res://scenes/bird.tscn" id="1_qffb1"]
+[ext_resource type="Script" path="res://scenes/Main.cs" id="1_uilwq"]
+[ext_resource type="PackedScene" uid="uid://clm88rif7n3d3" path="res://scenes/hud.tscn" id="3_b36vs"]
+[ext_resource type="Shader" path="res://scenes/crt.gdshader" id="3_imc47"]
+[ext_resource type="PackedScene" uid="uid://kew4qceobcpn" path="res://scenes/pipe_pair.tscn" id="3_n40pt"]
+[ext_resource type="Shader" path="res://scenes/ground_scrolling.gdshader" id="5_0cnxf"]
+[ext_resource type="Texture2D" uid="uid://cs26gfl8q67i7" path="res://assets/Ground.png" id="5_8t2ox"]
+[ext_resource type="AudioStream" uid="uid://dg02twusv87yy" path="res://assets/death.wav" id="7_k8y8e"]
+[ext_resource type="AudioStream" uid="uid://b5amh2sugan45" path="res://assets/bounce.wav" id="8_ir3sx"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rksn5"]
+shader = ExtResource("3_imc47")
+shader_parameter/overlay = false
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = true
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.03
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 1.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6vbhb"]
+shader = ExtResource("5_0cnxf")
+shader_parameter/Direction = Vector2(1, 0)
+shader_parameter/Speed = 0.3
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_erb88"]
+size = Vector2(798, 52)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_uilwq")
+PipesScene = ExtResource("3_n40pt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+top_level = true
+material = SubResource("ShaderMaterial_rksn5")
+scale = Vector2(720, 1280)
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.27451, 0.65098, 1, 1)
+
+[node name="HUD" parent="." instance=ExtResource("3_b36vs")]
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(358, 640)
+
+[node name="PipeSpawnTimer" type="Timer" parent="."]
+wait_time = 2.5
+
+[node name="PipeSpawnPosition" type="Marker2D" parent="."]
+position = Vector2(800, 640)
+
+[node name="GroundTexture" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_6vbhb")
+position = Vector2(358, 1254)
+scale = Vector2(4, 4)
+texture = ExtResource("5_8t2ox")
+
+[node name="Ground" type="Area2D" parent="GroundTexture"]
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GroundTexture/Ground"]
+shape = SubResource("RectangleShape2D_erb88")
+
+[node name="Bird" parent="." instance=ExtResource("1_qffb1")]
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_k8y8e")
+volume_db = -2.225
+
+[node name="ScoreSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_ir3sx")
+
+[connection signal="timeout" from="PipeSpawnTimer" to="." method="OnPipeSpawnTimerTimeout"]
+[connection signal="body_entered" from="GroundTexture/Ground" to="." method="OnGroundBodyEntered"]
+[connection signal="GameOver" from="Bird" to="." method="GameOver"]
