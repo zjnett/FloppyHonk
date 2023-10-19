@@ -2,6 +2,10 @@
 ![](https://img.shields.io/badge/Game_%23-1-chartreuse)
 ![](https://img.shields.io/badge/Engine-Godot-blue?logo=godotengine)
 
+<p align="center">
+  <img src="demo.gif" alt="animated"/>
+</p>
+
 A Flappy Bird clone made in Godot. Part of the [20 Games Challenge](https://20_games_challenge.gitlab.io//).
 
 ## Description
