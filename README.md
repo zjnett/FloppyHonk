@@ -32,5 +32,5 @@ I also chose to use C# as practice for later more advanced projects where I anti
 
 ## Credits
 - Rainbow Shader adapted from [Exuin on godotshaders.com](https://godotshaders.com/shader/moving-rainbow-gradient/)
-- (Currently unused) CRT shader from [pend00 on godotshaders.com](godotshaders.com/shader/VHS-and-CRT-monitor-effect)
+- (Currently unused) CRT shader from [pend00 on godotshaders.com](https://godotshaders.com/shader/VHS-and-CRT-monitor-effect/)
 
